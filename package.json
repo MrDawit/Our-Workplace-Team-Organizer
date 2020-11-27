@@ -1,0 +1,26 @@
+{
+  "name": "Our-Workplace-Team-Organizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start":"app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrDawit/Our-Workplace-Team-Organizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrDawit/Our-Workplace-Team-Organizer/issues"
+  },
+  "homepage": "https://github.com/MrDawit/Our-Workplace-Team-Organizer#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
