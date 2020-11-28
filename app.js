@@ -19,6 +19,8 @@ connection.connect(function (err) {
 
 //test by only going down rabbit hole of 1st function, after try to combine...
 //...these 3 functions by being more general ("select your choice of table" and choices being the tables)
+
+
 function addToDB() {
   inquirer.prompt([
     {
@@ -33,11 +35,23 @@ function addToDB() {
     }
   ]).then(function (data) {
     switch (data.add_table) {
+     
+  
       case "ADD to department table":
-        connection.query("INSERT department (name) VALUES ('production'),('admin')", function (err, res) {
+        inquirer.prompt([
+          {
+            type: "input",
+            message: "Type the department name",
+            name: "department_name"
+          }
+        ]).then(function(data) {
+
+        connection.query("INSERT department (name) VALUES ('" + data.department_name + "')", function (err, res) {
           if (err) throw err;
-          console.log(res + "but really part of seed inserted");
+          console.log(JSON.stringify(res) + "but really part of seed inserted");
         });
+        start();
+      })
         break;
       case "ADD to role table":
         ;
@@ -81,6 +95,12 @@ function viewDB() {
   ])
 };
 
+
+
+
+
+
+
 function start() {
   inquirer.prompt([
     {
@@ -90,7 +110,8 @@ function start() {
       choices: [
         "ADD to database",
         "UPDATE database",
-        "VIEW database"
+        "VIEW database",
+      "EXIT"
       ]
     },
   ]).then(function (data) {
@@ -105,7 +126,9 @@ function start() {
         viewDB();
         break;
       default:
-        return;
+        "EXIT";
+        connection.end();
+        break;
     }
 
   })
