@@ -14,24 +14,24 @@ const connection = mysql.createConnection({
 });
 
 
- function addToTable ( p_name , table_name , table_col ){
+ function addToTable ( prompt_name , table_name , table_col ){
 
     
     inquirer.prompt([
       {
         type: "input",
-        name: "d_name",
-        message: "Type the " + p_name + " ?"
+        name: prompt_name,
+        message: "Type the " + prompt_name + " ?"
         
       }
-    ]).then(function (data) {
+    ]).then( function (data) {
   
-      connection.query("INSERT " + table_name + " (" + table_col + ") VALUES ('" + data.d_name + "')", function (err, res) {
+      connection.query("INSERT " + table_name + " (" + table_col + ") VALUES ('" + data[prompt_name] + "')", function (err, res) {
         if (err) throw err;
        // console.log(JSON.stringify(res));
       });
      
-    })
+    });
   };
 
 //   addToTable(department_name,department,name,data.department_name);
@@ -63,7 +63,23 @@ const connection = mysql.createConnection({
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
     
-  
-    addToTable(dr_name , department , name );
+//   let dr_name = "FIXED";
+    addToTable("department_name" , "department" , "name" );
 
 });
+
+
+
+
+
+
+
+// function fun (add){
+// var sum=0;
+
+//     sum = add + 2; 
+// return sum;
+// }
+
+// fun(10)   //hopefully get 12
+// console.log(fun(10));
