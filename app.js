@@ -21,32 +21,105 @@ connection.connect(function (err) {
 //test by only going down rabbit hole of 1st function, after try to combine...
 //...these 3 functions by being more general ("select your choice of table" and choices being the tables)
 
- function addToTable (prompt_name , table_name , table_col) {
+function addToTable(prompt_name, table_name, table_col) {
   inquirer.prompt([
     {
       type: "input",
-        name: prompt_name,
-        message: "Type the " + prompt_name + " ?"
+      name: prompt_name,
+      message: "Type the " + prompt_name + " ?"
     }
   ]).then(function (data) {
 
     connection.query("INSERT " + table_name + " (" + table_col + ") VALUES ('" + data[prompt_name] + "')", function (err, res) {
       if (err) throw err;
-     // console.log(JSON.stringify(res));
+
+      // console.log(JSON.stringify(res));
     });
     start();
   })
 };
 
 
-async function forRoleTable(){
-  let first = await addToTable( "role_title" , "role" , "title" );
-  let second = await addToTable( "role_salary" , "role" , "salary" );
-  let third = await addToTable( "role's_department_id" , "role" , "department_id" );
-  first;
-  second;
-  third;
+function addToTable2() {
+
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "title",
+      message: "Type the employee's title ?"
+    },
+    {
+      type: "input",
+      name: "salary",
+      message: "Type the employee's salary ?"
+    },
+    {
+      type: "input",
+      name: "department_id",
+      message: "Type the employee's department_id ?"
+    }
+
+  ]).then(function (data) {
+
+    connection.query("INSERT role ( title , salary , department_id ) VALUES ('" + data.title + "', "
+      + data.salary + ", " + data.department_id + ")", function (err, res) {
+        if (err) throw err;
+
+        // console.log(JSON.stringify(res));
+      });
+    start();
+  });
 };
+
+
+function addToTable3() {
+
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "first_name",
+      message: "Type the employee's first_name ?"
+    },
+    {
+      type: "input",
+      name: "last_name",
+      message: "Type the employee's last_name ?"
+    },
+    {
+      type: "input",
+      name: "role_id",
+      message: "Type the employee's role_id ?"
+    },
+    {
+      type: "input",
+      name: "manager_id",
+      message: "Type the employee's manager_id ?"
+    }
+
+  ]).then(function (data) {
+
+    connection.query("INSERT employee ( first_name , last_name , role_id , manager_id ) VALUES ('" + data.first_name + "', '"
+      + data.last_name + "', " + data.role_id + "," + data.manager_id + ")", function (err, res) {
+        if (err) throw err;
+
+        // console.log(JSON.stringify(res));
+      });
+    start();
+  });
+};
+// async function forRoleTable(){
+//   try{
+//     await addToTable( "role_title" , "role" , "title" );
+//   await addToTable( "role_salary" , "role" , "salary" );
+//    await addToTable( "role's_department_id" , "role" , "department_id" );
+//   }
+//  catch(error){
+//    console.log(error);
+//  }
+// };
+
+
+
 
 function table() {
   inquirer.prompt([
@@ -60,14 +133,15 @@ function table() {
         "Employee table"
       ]
     }
-  ]).then(function(data){
+  ]).then(function (data) {
     switch (data.choose_table) {
 
 
       case "Department table":
-        addToTable( "department_name" , "department" , "name" );
+        addToTable("department_name", "department", "name");
         break;
       case "Role table":
+        addToTable2();
         // inquirer.prompt([
         //   {
         //     type: "input",
@@ -85,20 +159,23 @@ function table() {
         //       message: "Type the employee's department_id ?"
         //   }
         // ]).then( function (data) {
-               
-        // })
 
+        //           async function forRoleTable({
+        //             await addToTable( "role_title" , "role" , "title" );
 
-          forRoleTable();
+        //           }).then(function(){
+        //               await addToTable( "role_salary" , "role" , "salary" );
+        //             });
 
+        // forRoleTable();
         // addToTable( "role_title" , "role" , "title" );
         //    addToTable( "role_salary" , "role" , "salary" );
         //    addToTable( "roles_department_id" , "role" , "department_id" );
-       
-          
+
+
         break;
       case "Employee table":
-        
+        addToTable3();
         break;
       default:
         return;
