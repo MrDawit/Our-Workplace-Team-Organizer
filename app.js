@@ -118,8 +118,65 @@ function addToTable3() {
 //  }
 // };
 
+const name_array = [];
+function updateTableEmployee() {
+  connection.query("SELECT id, first_name, last_name FROM employee ", function (err, res) {
+    if (err) throw err;
+    let i = 0;
+    for (i = 0; i < res.length; i++) {
+      
+      name_array.push("id# " + res[i].id + ", " + res[i].last_name + " , " + res[i].first_name);
+    };
+  inquirer.prompt([
+    {
+      type: "rawlist",
+      name: "update_name_choices",
+      message: "Which employee do you wish to update?",
+      choices: name_array,
+    
+     },
+     {
+      type: "input",
+      name: "first_name",
+      message: "Type the employee's first_name ?"
+    },
+    {
+      type: "input",
+      name: "last_name",
+      message: "Type the employee's last_name ?"
+    },
+    {
+      type: "input",
+      name: "role_id",
+      message: "Type the employee's role_id ?"
+    },
+    {
+      type: "input",
+      name: "manager_id",
+      message: "Type the employee's manager_id ?"
+    }
+    // ,{
+    //   type: "input",
+    //   name: prompt_name,
+    //   message: "Type the " + prompt_name + " ?"
+    // }
+  ]).then(function (data) {
 
+    connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" + data.role_id + "', manager_id = '" + data.role_id + "' WHERE id = ", function (err, res) {
+      if (err) throw err;
 
+      console.log(res.affectedRows + " record(s) updated");
+    });
+      connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) {
+     
+      });
+
+    
+
+    start();
+  });
+});
+};
 
 function table() {
   inquirer.prompt([
@@ -138,7 +195,7 @@ function table() {
 
 
       case "Department table":
-        addToTable("department_name", "department", "name");
+        addToTable4("department_name", "department", "name");
         break;
       case "Role table":
         addToTable2();
@@ -179,10 +236,10 @@ function table() {
         break;
       default:
         return;
-    }
+    };
 
-  })
-}
+  });
+};
 
 // function addToDB() {
 //   inquirer.prompt([
@@ -261,6 +318,70 @@ function table() {
 
 
 
+//update function
+function table2() {
+  inquirer.prompt([
+    {
+      type: "rawlist",
+      message: "Select your choice of table",
+      name: "choose_table",
+      choices: [
+        "Department table",
+        "Role table",
+        "Employee table"
+      ]
+    }
+  ]).then(function (data) {
+    switch (data.choose_table) {
+
+
+      case "Department table":
+        addToTable("department_name", "department", "name");
+        break;
+      case "Role table":
+        addToTable2();
+        // inquirer.prompt([
+        //   {
+        //     type: "input",
+        //       name: "title",
+        //       message: "Type the employee's title ?"
+        //   },
+        //   {
+        //     type: "input",
+        //       name: "salary",
+        //       message: "Type the employee's salary ?"
+        //   },
+        //   {
+        //     type: "input",
+        //       name: "department_id",
+        //       message: "Type the employee's department_id ?"
+        //   }
+        // ]).then( function (data) {
+
+        //           async function forRoleTable({
+        //             await addToTable( "role_title" , "role" , "title" );
+
+        //           }).then(function(){
+        //               await addToTable( "role_salary" , "role" , "salary" );
+        //             });
+
+        // forRoleTable();
+        // addToTable( "role_title" , "role" , "title" );
+        //    addToTable( "role_salary" , "role" , "salary" );
+        //    addToTable( "roles_department_id" , "role" , "department_id" );
+
+
+        break;
+      case "Employee table":
+        addToTable3();
+        break;
+      default:
+        return;
+    };
+
+  });
+};
+
 
 
 
@@ -284,6 +405,7 @@ function start() {
         //addToDB();
         break;
       case "UPDATE database":
+        updateTableEmployee();
         //updateDB();
         break;
       case "VIEW database":

@@ -14,72 +14,79 @@ const connection = mysql.createConnection({
 });
 
 
- function addToTable ( prompt_name , table_name , table_col ){
-
-    
-    inquirer.prompt([
-      {
-        type: "input",
-        name: prompt_name,
-        message: "Type the " + prompt_name + " ?"
-        
-      }
-    ]).then( function (data) {
-  
-      connection.query("INSERT " + table_name + " (" + table_col + ") VALUES ('" + data[prompt_name] + "')", function (err, res) {
-        if (err) throw err;
-       // console.log(JSON.stringify(res));
-      });
-     
-    });
-  };
-
-//   addToTable(department_name,department,name,data.department_name);
+// function addToTable(prompt_name, table_name, table_col) {
 
 
+//   inquirer.prompt([
+//     {
+//       type: "input",
+//       name: prompt_name,
+//       message: "Type the " + prompt_name + " ?"
 
+//     }
+//   ]).then(function (data) {
 
-// function addToTable (p_name){
-//     inquirer.prompt([
-//       {
-//         type: "input",
-//         name: p_name,
-//         message: "Type the"+ p_name
-        
-//       }
-//     ]).then(function (data) {
-  
-//         connection.query("INSERT department (name) VALUES ('" + data.d_name + "')", function (err, res) {
-//         if (err) throw err;
-//        // console.log(JSON.stringify(res));
-//       });
-     
-//     })
-//   };
+//     connection.query("SELECT first_name FROM employee ", function (err, rows) {
+//       if (err) throw err;
+//       console.log(rows[0].first_name);
+//     });
+
+//   });
+// };
+
+// addToTable();
 
 
 
-  connection.connect(function (err) {
+
+
+
+// const fetch = [];
+// function first() {
+//   connection.query("SELECT first_name,last_name FROM employee ", function (err, res) {
+//     if (err) throw err;
+//     let i = 0;
+//     for (i = 0; i < res.length; i++) {
+//       fetch.push(res[i].last_name + " , " + res[i].first_name);
+//     };
+//     console.log(fetch);
+//     // return fetch;
+
+//   });
+// };
+//   // first().then(function(){
+//   //   console.log(fetch);
+//   // });
+//   //console.log(fetch);
+// first();
+
+
+
+
+const name_array=[];
+function updateTableEmployee() {
+  connection.query("SELECT id, first_name, last_name FROM employee ", function (err, res) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
+    let i = 0;
+    for (i = 0; i < res.length; i++) {
+      
+      name_array.push("id# " + res[i].id + ", " + res[i].last_name + " , " + res[i].first_name);
+      
+    };
+  
+  inquirer.prompt([
+    {
+      type: "rawlist",
+      name: "update_name_choices",
+      message: "Which employee do you wish to update?",
+      choices: name_array
     
-//   let dr_name = "FIXED";
-    addToTable("department_name" , "department" , "name" );
+     }
+    ]).then(function (data) {
 
-});
+      console.log("Just Checking: " + data.update_name_choices);
+    });
+  });
+ };
 
-
-
-
-
-
-
-// function fun (add){
-// var sum=0;
-
-//     sum = add + 2; 
-// return sum;
-// }
-
-// fun(10)   //hopefully get 12
-// console.log(fun(10));
+  updateTableEmployee();
