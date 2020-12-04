@@ -118,14 +118,15 @@ function addToTable3() {
 //  }
 // };
 
-const name_array = [];
+
 function updateTableEmployee() {
+  let name_array = [];
   connection.query("SELECT id, first_name, last_name FROM employee ", function (err, res) {
     if (err) throw err;
     let i = 0;
     for (i = 0; i < res.length; i++) {
       
-      name_array.push("id# " + res[i].id + ", " + res[i].last_name + " , " + res[i].first_name);
+      name_array.push("ID# " + res[i].id + ": " + res[i].last_name + " , " + res[i].first_name);
     };
   inquirer.prompt([
     {
@@ -133,7 +134,6 @@ function updateTableEmployee() {
       name: "update_name_choices",
       message: "Which employee do you wish to update?",
       choices: name_array,
-    
      },
      {
       type: "input",
@@ -155,24 +155,16 @@ function updateTableEmployee() {
       name: "manager_id",
       message: "Type the employee's manager_id ?"
     }
-    // ,{
-    //   type: "input",
-    //   name: prompt_name,
-    //   message: "Type the " + prompt_name + " ?"
-    // }
   ]).then(function (data) {
-
-    connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" + data.role_id + "', manager_id = '" + data.role_id + "' WHERE id = ", function (err, res) {
-      if (err) throw err;
-
-      console.log(res.affectedRows + " record(s) updated");
-    });
-      connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) {
-     
-      });
-
     
+    connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" + data.role_id + "', manager_id = '" + data.manager_id + "' WHERE id = '" + data.update_name_choices.replace(/\D/g, "") + "' ", function (err, res) {
+      if (err) throw err;
+      // console.log("just checking: "+ data.update_name_choices.replace(/\D/g, ""));
+       console.log(res.affectedRows + " record(s) updated");
+    });
 
+                                                                  // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
+      
     start();
   });
 });

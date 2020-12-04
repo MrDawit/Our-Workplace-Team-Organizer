@@ -61,6 +61,10 @@ const connection = mysql.createConnection({
 // first();
 
 
+//mysql update example
+// connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) {
+     
+// });
 
 
 const name_array=[];
@@ -70,7 +74,7 @@ function updateTableEmployee() {
     let i = 0;
     for (i = 0; i < res.length; i++) {
       
-      name_array.push("id# " + res[i].id + ", " + res[i].last_name + " , " + res[i].first_name);
+      name_array.push("ID# " + res[i].id + ": " + res[i].last_name + " , " + res[i].first_name);
       
     };
   
@@ -84,7 +88,7 @@ function updateTableEmployee() {
      }
     ]).then(function (data) {
 
-      console.log("Just Checking: " + data.update_name_choices);
+      console.log("Just Checking: " + data.update_name_choices.search(/\d/));
     });
   });
  };
