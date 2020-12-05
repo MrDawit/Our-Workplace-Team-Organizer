@@ -39,7 +39,7 @@ function addToTable(prompt_name, table_name, table_col) {
   })
 };
 
-
+//adding values to roles table function
 function addToTable2() {
 
   inquirer.prompt([
@@ -71,7 +71,7 @@ function addToTable2() {
   });
 };
 
-
+//adding values to employee table function
 function addToTable3() {
 
   inquirer.prompt([
@@ -107,18 +107,108 @@ function addToTable3() {
     start();
   });
 };
-// async function forRoleTable(){
-//   try{
-//     await addToTable( "role_title" , "role" , "title" );
-//   await addToTable( "role_salary" , "role" , "salary" );
-//    await addToTable( "role's_department_id" , "role" , "department_id" );
-//   }
-//  catch(error){
-//    console.log(error);
-//  }
-// };
+
+//update values to department table function
+function updateTableDepartment() {
+  let department_array = [];
+  connection.query("SELECT id, name FROM department", function (err, res) {
+    if (err) throw err;
+    let i = 0;
+    for (i = 0; i < res.length; i++) {
+      
+      department_array.push("ID#: " + res[i].id + " , " + res[i].name );
+    };
+  inquirer.prompt([
+    {
+      type: "rawlist",
+      name: "update_department_choices",
+      message: "Which department do you wish to update?",
+      choices: department_array,
+     },
+     {
+      type: "input",
+      name: "namez",
+      message: "Type the employee's department ?"
+    }
+  ]).then(function (data) {
+    
+    connection.query("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ", function (err, res) {
+      if (err) throw err;
+      
+      console.log("hope: " + data.namez);
+      console.log("JUST CHECKING: "+ data.update_department_choices );
+      //regex for taking out digits before wordcharacter(lookahead)
+      console.log("JUST CHECKING CLOSER " + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
+      console.log(res.affectedRows + " record(s) updated");
+      console.log("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ");
+    });
+
+       // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
+      
+    start();
+  });
+});
+};
 
 
+//update values to role table function
+function updateTableRole() {
+  let roles_array = [];
+  connection.query("SELECT id, title, salary, department_id FROM role", function (err, res) {
+    if (err) throw err;
+    let i = 0;
+    for (i = 0; i < res.length; i++) {
+      
+      roles_array.push("ID#: " + res[i].id + " , " + res[i].title + " , " + res[i].salary + " , " + res[i].department_id);
+    };
+  inquirer.prompt([
+    {
+      type: "rawlist",
+      name: "update_role_choices",
+      message: "Which role do you wish to update?",
+      choices: roles_array,
+     },
+     {
+      type: "input",
+      name: "title",
+      message: "Type the employee's role ?"
+    },
+    {
+      type: "input",
+      name: "salary",
+      message: "Type the employee's salary ?"
+    },
+    {
+      type: "input",
+      name: "department_id",
+      message: "Type the employee's department_id ?"
+    }
+  ]).then(function (data) {
+   
+    connection.query("UPDATE role SET title = '" + data.title + "', salary = '" + data.salary + "', department_id = '" +
+     data.department_id + "' WHERE id = '" + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ", function (err, res) {
+      if (err) throw err;
+      // console.log("JUST CHECKING: "+ data.update_role_choices );
+      // console.log("JUST CHECKING CLOSER " + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
+       console.log(res.affectedRows + " record(s) updated");
+    });
+
+       // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
+      
+    start();
+  });
+});
+};
+
+
+
+
+
+
+
+
+
+//update values to employee table function
 function updateTableEmployee() {
   let name_array = [];
   connection.query("SELECT id, first_name, last_name FROM employee ", function (err, res) {
@@ -157,7 +247,8 @@ function updateTableEmployee() {
     }
   ]).then(function (data) {
     
-    connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" + data.role_id + "', manager_id = '" + data.manager_id + "' WHERE id = '" + data.update_name_choices.replace(/\D/g, "") + "' ", function (err, res) {
+    connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" +
+     data.role_id + "', manager_id = '" + data.manager_id + "' WHERE id = '" + data.update_name_choices.replace(/\D/g, "") + "' ", function (err, res) {
       if (err) throw err;
       // console.log("just checking: "+ data.update_name_choices.replace(/\D/g, ""));
        console.log(res.affectedRows + " record(s) updated");
@@ -170,148 +261,9 @@ function updateTableEmployee() {
 });
 };
 
+
+//function for choosing table to add to 
 function table() {
-  inquirer.prompt([
-    {
-      type: "rawlist",
-      message: "Select your choice of table",
-      name: "choose_table",
-      choices: [
-        "Department table",
-        "Role table",
-        "Employee table"
-      ]
-    }
-  ]).then(function (data) {
-    switch (data.choose_table) {
-
-
-      case "Department table":
-        addToTable4("department_name", "department", "name");
-        break;
-      case "Role table":
-        addToTable2();
-        // inquirer.prompt([
-        //   {
-        //     type: "input",
-        //       name: "title",
-        //       message: "Type the employee's title ?"
-        //   },
-        //   {
-        //     type: "input",
-        //       name: "salary",
-        //       message: "Type the employee's salary ?"
-        //   },
-        //   {
-        //     type: "input",
-        //       name: "department_id",
-        //       message: "Type the employee's department_id ?"
-        //   }
-        // ]).then( function (data) {
-
-        //           async function forRoleTable({
-        //             await addToTable( "role_title" , "role" , "title" );
-
-        //           }).then(function(){
-        //               await addToTable( "role_salary" , "role" , "salary" );
-        //             });
-
-        // forRoleTable();
-        // addToTable( "role_title" , "role" , "title" );
-        //    addToTable( "role_salary" , "role" , "salary" );
-        //    addToTable( "roles_department_id" , "role" , "department_id" );
-
-
-        break;
-      case "Employee table":
-        addToTable3();
-        break;
-      default:
-        return;
-    };
-
-  });
-};
-
-// function addToDB() {
-//   inquirer.prompt([
-//     {
-//       type: "rawlist",
-//       message: "Select your choice of table",
-//       name: "add_table",
-//       choices: [
-//         "ADD to department table",
-//         "ADD to role table",
-//         "ADD to employee table"
-//       ]
-//     }
-//   ]).then(function (data) {
-//     switch (data.add_table) {
-
-
-//       case "ADD to department table":
-//         inquirer.prompt([
-//           {
-//             type: "input",
-//             message: "Type the department name",
-//             name: "department_name"
-//           }
-//         ]).then(function (data) {
-
-//           connection.query("INSERT department (name) VALUES ('" + data.department_name + "')", function (err, res) {
-//             if (err) throw err;
-//             console.log(JSON.stringify(res) + "but really part of seed inserted");
-//           });
-//           start();
-//         })
-//         break;
-//       case "ADD to role table":
-//         ;
-//         break;
-//       case "ADD to employee table":
-//         ;
-//         break;
-//       default:
-//         return;
-//     }
-//   });
-// };
-
-// function updateDB() {
-//   inquirer.prompt([
-//     {
-//       type: "rawlist",
-//       message: "Select your choice of table",
-//       name: "update_table",
-//       choices: [
-//         "UPDATE department table",
-//         "UPDATE role table",
-//         "UPDATE employee table"
-//       ]
-//     }
-//   ])
-// };
-
-// function viewDB() {
-//   inquirer.prompt([
-//     {
-//       type: "rawlist",
-//       message: "Select your choice of table",
-//       name: "view_table",
-//       choices: [
-//         "VIEW department table",
-//         "VIEW role table",
-//         "VIEW employee table"
-//       ]
-//     }
-//   ])
-// };
-
-
-
-
-//update function
-function table2() {
   inquirer.prompt([
     {
       type: "rawlist",
@@ -332,37 +284,6 @@ function table2() {
         break;
       case "Role table":
         addToTable2();
-        // inquirer.prompt([
-        //   {
-        //     type: "input",
-        //       name: "title",
-        //       message: "Type the employee's title ?"
-        //   },
-        //   {
-        //     type: "input",
-        //       name: "salary",
-        //       message: "Type the employee's salary ?"
-        //   },
-        //   {
-        //     type: "input",
-        //       name: "department_id",
-        //       message: "Type the employee's department_id ?"
-        //   }
-        // ]).then( function (data) {
-
-        //           async function forRoleTable({
-        //             await addToTable( "role_title" , "role" , "title" );
-
-        //           }).then(function(){
-        //               await addToTable( "role_salary" , "role" , "salary" );
-        //             });
-
-        // forRoleTable();
-        // addToTable( "role_title" , "role" , "title" );
-        //    addToTable( "role_salary" , "role" , "salary" );
-        //    addToTable( "roles_department_id" , "role" , "department_id" );
-
-
         break;
       case "Employee table":
         addToTable3();
@@ -374,6 +295,75 @@ function table2() {
   });
 };
 
+
+//function for choosing table to update
+function table2() {
+  inquirer.prompt([
+        {
+          type: "rawlist",
+          message: "Select your choice of table",
+          name: "update_table",
+          choices: [
+            "UPDATE department table",
+            "UPDATE role table",
+            "UPDATE employee table"
+          ]
+        }
+      ]).then(function (data) {
+    switch (data.update_table) {
+
+
+      case "UPDATE department table":
+        updateTableDepartment();
+        break;
+      case "UPDATE role table":
+        updateTableRole();
+       
+        break;
+      case "UPDATE employee table":
+        updateTableEmployee();
+        break;
+      default:
+        return;
+    };
+
+  });
+};
+
+
+//function for choosing table to view
+function table3() {
+    inquirer.prompt([
+    {
+      type: "rawlist",
+      message: "Select your choice of table",
+      name: "view_table",
+      choices: [
+        "VIEW department table",
+        "VIEW role table",
+        "VIEW employee table"
+      ]
+    }
+  ]).then(function (data) {
+    switch (data.choose_table) {
+
+
+      case "VIEW department table":
+        //updateTableEmployee();
+        break;
+      case "VIEW role table":
+       // addToTable2();
+       
+        break;
+      case "VIEW employee table":
+        //addToTable3();
+        break;
+      default:
+        return;
+    };
+
+  });
+};
 
 
 
@@ -397,10 +387,11 @@ function start() {
         //addToDB();
         break;
       case "UPDATE database":
-        updateTableEmployee();
+        table2();
         //updateDB();
         break;
       case "VIEW database":
+        table3();
         //viewDB();
         break;
       default:
