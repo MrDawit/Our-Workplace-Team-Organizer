@@ -18,10 +18,9 @@ connection.connect(function (err) {
   start();
 });
 
-//test by only going down rabbit hole of 1st function, after try to combine...
-//...these 3 functions by being more general ("select your choice of table" and choices being the tables)
-
-function addToTable(prompt_name, table_name, table_col) {
+//function for adding values to employee table (original structure for functions, so that the # of functions stayed low 
+//This structure did not stay the same for the rest of the code, but kept this one)
+function addToTableDepartment(prompt_name, table_name, table_col) {
   inquirer.prompt([
     {
       type: "input",
@@ -32,15 +31,14 @@ function addToTable(prompt_name, table_name, table_col) {
 
     connection.query("INSERT " + table_name + " (" + table_col + ") VALUES ('" + data[prompt_name] + "')", function (err, res) {
       if (err) throw err;
-
-      // console.log(JSON.stringify(res));
+      console.log(res.affectedRows + " record(s) added");
     });
     start();
   })
 };
 
 //adding values to roles table function
-function addToTable2() {
+function addToTableRole() {
 
   inquirer.prompt([
     {
@@ -65,14 +63,14 @@ function addToTable2() {
       + data.salary + ", " + data.department_id + ")", function (err, res) {
         if (err) throw err;
 
-        // console.log(JSON.stringify(res));
+        console.log(res.affectedRows + " record(s) updated");
       });
     start();
   });
 };
 
 //adding values to employee table function
-function addToTable3() {
+function addToTableEmployee() {
 
   inquirer.prompt([
     {
@@ -102,7 +100,7 @@ function addToTable3() {
       + data.last_name + "', " + data.role_id + "," + data.manager_id + ")", function (err, res) {
         if (err) throw err;
 
-        // console.log(JSON.stringify(res));
+        console.log(res.affectedRows + " record(s) updated");
       });
     start();
   });
@@ -139,8 +137,6 @@ function updateTableDepartment() {
       // console.log("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.match(/\d+(?=\s\:)/g) + "' ");
       console.log(res.affectedRows + " record(s) updated");
     });
-
-       // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
       
     start();
   });
@@ -189,21 +185,11 @@ function updateTableRole() {
       // console.log("JUST CHECKING CLOSER " + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
        console.log(res.affectedRows + " record(s) updated");
     });
-
-       // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
       
     start();
   });
 });
 };
-
-
-
-
-
-
-
-
 
 //update values to employee table function
 function updateTableEmployee() {
@@ -250,8 +236,6 @@ function updateTableEmployee() {
       // console.log("just checking: "+ data.update_name_choices.replace(/\D/g, ""));
        console.log(res.affectedRows + " record(s) updated");
     });
-
-                                                                  // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
       
     start();
   });
@@ -260,7 +244,7 @@ function updateTableEmployee() {
 
 
 //function for choosing table to add to 
-function table() {
+function selectTableToAddTo() {
   inquirer.prompt([
     {
       type: "rawlist",
@@ -277,13 +261,13 @@ function table() {
 
 
       case "Department table":
-        addToTable("department_name", "department", "name");
+        addToTableDepartment("department_name", "department", "name");
         break;
       case "Role table":
-        addToTable2();
+        addToTableRole();
         break;
       case "Employee table":
-        addToTable3();
+        addToTableEmployee();
         break;
       default:
         return;
@@ -294,7 +278,7 @@ function table() {
 
 
 //function for choosing table to update
-function table2() {
+function selectTableToUpdate() {
   inquirer.prompt([
         {
           type: "rawlist",
@@ -329,7 +313,7 @@ function table2() {
 
 
 //function for choosing table to view
-function table3() {
+function selectTableToView() {
     inquirer.prompt([
     {
       type: "rawlist",
@@ -346,14 +330,14 @@ function table3() {
 
 
       case "VIEW department table":
-        //updateTableEmployee();
+        viewEmployeeTable();
         break;
       case "VIEW role table":
-       // addToTable2();
+       viewRoleTable();
        
         break;
       case "VIEW employee table":
-        //addToTable3();
+        viewEmployeeTable();
         break;
       default:
         return;
@@ -380,16 +364,13 @@ function start() {
   ]).then(function (data) {
     switch (data.type) {
       case "ADD to database":
-        table();
-        //addToDB();
+        selectTableToAddTo();
         break;
       case "UPDATE database":
-        table2();
-        //updateDB();
+        selectTableToUpdate();
         break;
       case "VIEW database":
-        table3();
-        //viewDB();
+        selectTableToView();
         break;
       default:
         "EXIT";
