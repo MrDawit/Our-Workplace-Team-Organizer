@@ -243,6 +243,28 @@ function viewTable(whichTable){
   });
 };
 
+//function for viewing all employee's data
+function viewAllEmployeeData(){
+  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id"; 
+  connection.query(sql_leftJoin + ";", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+};
+
+//function for viewing all data from employee, role and department tables
+function viewAllData(){
+  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id"; 
+  let sql_rightJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee RIGHT JOIN role ON employee.role_id = role.id RIGHT JOIN department ON role.department_id = department.id";
+  connection.query(sql_leftJoin + " UNION " + sql_rightJoin + ";", function (err, res) {
+    if (err) throw err;
+   console.table(res);
+  //console.log("The json result: " + JSON.stringify(res));
+   start();
+  });
+};
+
 //function for viewing connection between the 3 tables
 function viewConnectedData(){
   
@@ -328,6 +350,8 @@ function selectTableToView() {
       message: "Select your choice of table",
       name: "view_table",
       choices: [
+        "VIEW ALL employee's data",
+        "VIEW ALL data",
         "VIEW the employees that have connected data",
         "VIEW only employee table",
         "VIEW only role table",
@@ -336,6 +360,12 @@ function selectTableToView() {
     }
   ]).then(function (data) {
     switch (data.view_table) {
+      case "VIEW ALL employee's data":
+        viewAllEmployeeData();
+        break;
+        case "VIEW ALL data":
+          viewAllData();
+          break;
       case "VIEW the employees that have connected data":
         viewConnectedData();
         break;
