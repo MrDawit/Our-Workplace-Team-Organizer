@@ -116,7 +116,7 @@ function updateTableDepartment() {
     let i = 0;
     for (i = 0; i < res.length; i++) {
       
-      department_array.push("ID#: " + res[i].id + " , " + res[i].name );
+      department_array.push("ID# " + res[i].id + " : " + res[i].name );
     };
   inquirer.prompt([
     {
@@ -127,20 +127,17 @@ function updateTableDepartment() {
      },
      {
       type: "input",
-      name: "namez",
+      name: "name",
       message: "Type the employee's department ?"
     }
   ]).then(function (data) {
     
-    connection.query("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ", function (err, res) {
+    connection.query("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.match(/\d+(?=\s\:)/g) + "' ", function (err, res) {
       if (err) throw err;
-      
-      console.log("hope: " + data.namez);
-      console.log("JUST CHECKING: "+ data.update_department_choices );
-      //regex for taking out digits before wordcharacter(lookahead)
-      console.log("JUST CHECKING CLOSER " + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
+     
+      // console.log("JUST CHECKING: "+ data.update_department_choices );
+      // console.log("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.match(/\d+(?=\s\:)/g) + "' ");
       console.log(res.affectedRows + " record(s) updated");
-      console.log("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ");
     });
 
        // connection.query("UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'", function (err, res) 
@@ -159,7 +156,7 @@ function updateTableRole() {
     let i = 0;
     for (i = 0; i < res.length; i++) {
       
-      roles_array.push("ID#: " + res[i].id + " , " + res[i].title + " , " + res[i].salary + " , " + res[i].department_id);
+      roles_array.push("ID# " + res[i].id + " : " + res[i].title + " , " + res[i].salary + " , " + res[i].department_id);
     };
   inquirer.prompt([
     {
@@ -186,7 +183,7 @@ function updateTableRole() {
   ]).then(function (data) {
    
     connection.query("UPDATE role SET title = '" + data.title + "', salary = '" + data.salary + "', department_id = '" +
-     data.department_id + "' WHERE id = '" + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) + "' ", function (err, res) {
+     data.department_id + "' WHERE id = '" + data.update_role_choices.match(/\d+(?=\s\:)/g) + "' ", function (err, res) {
       if (err) throw err;
       // console.log("JUST CHECKING: "+ data.update_role_choices );
       // console.log("JUST CHECKING CLOSER " + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
