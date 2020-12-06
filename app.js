@@ -1,9 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 
-
-const department_name = "";
-
 const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -132,9 +129,6 @@ function updateTableDepartment() {
 
       connection.query("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.match(/\d+(?=\s\:)/g) + "' ", function (err, res) {
         if (err) throw err;
-
-        // console.log("JUST CHECKING: "+ data.update_department_choices );
-        // console.log("UPDATE department SET name = '" + data.name + "' WHERE id = '" + data.update_department_choices.match(/\d+(?=\s\:)/g) + "' ");
         console.log(res.affectedRows + " record(s) updated");
       });
 
@@ -181,8 +175,6 @@ function updateTableRole() {
       connection.query("UPDATE role SET title = '" + data.title + "', salary = '" + data.salary + "', department_id = '" +
         data.department_id + "' WHERE id = '" + data.update_role_choices.match(/\d+(?=\s\:)/g) + "' ", function (err, res) {
           if (err) throw err;
-          // console.log("JUST CHECKING: "+ data.update_role_choices );
-          // console.log("JUST CHECKING CLOSER " + data.update_role_choices.search(/\b\d+(?=[^\d<]*\w\d+)/g) );
           console.log(res.affectedRows + " record(s) updated");
         });
 
@@ -233,7 +225,6 @@ function updateTableEmployee() {
       connection.query("UPDATE employee SET first_name = '" + data.first_name + "', last_name = '" + data.last_name + "', role_id = '" +
         data.role_id + "', manager_id = '" + data.manager_id + "' WHERE id = '" + data.update_name_choices.replace(/\D/g, "") + "' ", function (err, res) {
           if (err) throw err;
-          // console.log("just checking: "+ data.update_name_choices.replace(/\D/g, ""));
           console.log(res.affectedRows + " record(s) updated");
         });
 
@@ -242,48 +233,12 @@ function updateTableEmployee() {
   });
 };
 
-// //view department table function
-// function viewDepartmentTable(){
- 
-//     connection.query("SELECT * FROM our_workplace.department", function (err, res) {
-//       if (err) throw err;
-//      console.table(res);
-//     // console.log(res);
-//     start();
-//     });
-// };
-
-// //view role table function
-// function viewRoleTable(){
- 
-//   connection.query("SELECT * FROM our_workplace.role", function (err, res) {
-//     if (err) throw err;
-//    console.table(res);
-//   // console.log(res);
-//   start();
-//   });
-// };
-
-
-// //view employee table function
-// function viewEmployeeTable(){
- 
-//   connection.query("SELECT * FROM our_workplace.employee", function (err, res) {
-//     if (err) throw err;
-//    console.table(res);
-//   // console.log(res);
-//   start();
-//   });
-// };
-
-
 //view table function using parameters to choose which table
 function viewTable(whichTable){
  
   connection.query("SELECT * FROM our_workplace." + whichTable, function (err, res) {
     if (err) throw err;
    console.table(res);
-  // console.log(res);
   start();
   });
 };
@@ -296,23 +251,21 @@ function selectTableToAddTo() {
       message: "Select your choice of table",
       name: "choose_table",
       choices: [
-        "Department table",
+        "Employee table",
         "Role table",
-        "Employee table"
+        "Department table"
       ]
     }
   ]).then(function (data) {
     switch (data.choose_table) {
-
-
-      case "Department table":
-        addToTableDepartment("department_name", "department", "name");
-        break;
-      case "Role table":
-        addToTableRole();
-        break;
       case "Employee table":
         addToTableEmployee();
+        break;
+        case "Role table":
+        addToTableRole();
+        break;
+      case "Department table":
+        addToTableDepartment("department_name", "department", "name");
         break;
       default:
         return;
@@ -330,9 +283,9 @@ function selectTableToUpdate() {
       message: "Select your choice of table",
       name: "update_table",
       choices: [
-        "UPDATE department table",
+        "UPDATE employee table",
         "UPDATE role table",
-        "UPDATE employee table"
+        "UPDATE department table"
       ]
     }
   ]).then(function (data) {
@@ -344,7 +297,6 @@ function selectTableToUpdate() {
         break;
       case "UPDATE role table":
         updateTableRole();
-
         break;
       case "UPDATE employee table":
         updateTableEmployee();
@@ -365,27 +317,22 @@ function selectTableToView() {
       message: "Select your choice of table",
       name: "view_table",
       choices: [
-        "VIEW department table",
+        "VIEW employee table",
         "VIEW role table",
-        "VIEW employee table"
+        "VIEW department table"
       ]
     }
   ]).then(function (data) {
     switch (data.view_table) {
 
-
-      case "VIEW department table":
-        viewTable("department");
-        // viewDepartmentTable();
+      case "VIEW employee table":
+        viewTable("employee");
         break;
       case "VIEW role table":
         viewTable("role");
-        //viewRoleTable();
-
         break;
-      case "VIEW employee table":
-        viewTable("employee");
-        //viewEmployeeTable();
+        case "VIEW department table":
+        viewTable("department");
         break;
       default:
         return;
