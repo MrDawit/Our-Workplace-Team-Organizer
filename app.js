@@ -243,6 +243,17 @@ function viewTable(whichTable){
   });
 };
 
+//function for viewing connection between the 3 tables
+function viewConnectedData(){
+  
+    connection.query("SELECT employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, role.salary AS salary, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;", function (err, res) {
+      if (err) throw err;
+     console.table(res);
+    //console.log("The json result: " + JSON.stringify(res));
+     start();
+    });
+};
+
 //function for choosing table to add to 
 function selectTableToAddTo() {
   inquirer.prompt([
@@ -317,21 +328,24 @@ function selectTableToView() {
       message: "Select your choice of table",
       name: "view_table",
       choices: [
-        "VIEW employee table",
-        "VIEW role table",
-        "VIEW department table"
+        "VIEW the employees that have connected data",
+        "VIEW only employee table",
+        "VIEW only role table",
+        "VIEW only department table"
       ]
     }
   ]).then(function (data) {
     switch (data.view_table) {
-
-      case "VIEW employee table":
+      case "VIEW the employees that have connected data":
+        viewConnectedData();
+        break;
+      case "VIEW only employee table":
         viewTable("employee");
         break;
-      case "VIEW role table":
+      case "VIEW only role table":
         viewTable("role");
         break;
-        case "VIEW department table":
+        case "VIEW only department table":
         viewTable("department");
         break;
       default:
