@@ -242,40 +242,51 @@ function updateTableEmployee() {
   });
 };
 
-//view department table function
-function viewDepartmentTable(){
+// //view department table function
+// function viewDepartmentTable(){
  
-    connection.query("SELECT * FROM our_workplace.department", function (err, res) {
-      if (err) throw err;
-     console.table(res);
-    // console.log(res);
-    start();
-    });
-};
+//     connection.query("SELECT * FROM our_workplace.department", function (err, res) {
+//       if (err) throw err;
+//      console.table(res);
+//     // console.log(res);
+//     start();
+//     });
+// };
 
-//view role table function
-function viewRoleTable(){
+// //view role table function
+// function viewRoleTable(){
  
-  connection.query("SELECT * FROM our_workplace.role", function (err, res) {
+//   connection.query("SELECT * FROM our_workplace.role", function (err, res) {
+//     if (err) throw err;
+//    console.table(res);
+//   // console.log(res);
+//   start();
+//   });
+// };
+
+
+// //view employee table function
+// function viewEmployeeTable(){
+ 
+//   connection.query("SELECT * FROM our_workplace.employee", function (err, res) {
+//     if (err) throw err;
+//    console.table(res);
+//   // console.log(res);
+//   start();
+//   });
+// };
+
+
+//view table function using parameters to choose which table
+function viewTable(whichTable){
+ 
+  connection.query("SELECT * FROM our_workplace." + whichTable, function (err, res) {
     if (err) throw err;
    console.table(res);
   // console.log(res);
   start();
   });
 };
-
-
-//view employee table function
-function viewEmployeeTable(){
- 
-  connection.query("SELECT * FROM our_workplace.employee", function (err, res) {
-    if (err) throw err;
-   console.table(res);
-  // console.log(res);
-  start();
-  });
-};
-
 
 //function for choosing table to add to 
 function selectTableToAddTo() {
@@ -364,14 +375,17 @@ function selectTableToView() {
 
 
       case "VIEW department table":
-        viewDepartmentTable();
+        viewTable("department");
+        // viewDepartmentTable();
         break;
       case "VIEW role table":
-        viewRoleTable();
+        viewTable("role");
+        //viewRoleTable();
 
         break;
       case "VIEW employee table":
-        viewEmployeeTable();
+        viewTable("employee");
+        //viewEmployeeTable();
         break;
       default:
         return;
