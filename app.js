@@ -9,12 +9,6 @@ const connection = mysql.createConnection({
   database: "our_workplace"
 });
 
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
-  start();
-});
-
 //function for adding values to employee table (original structure for functions, so that the # of functions stayed low 
 //This structure did not stay the same for the rest of the code, but kept this one)
 function addToTableDepartment(prompt_name, table_name, table_col) {
@@ -234,18 +228,18 @@ function updateTableEmployee() {
 };
 
 //view table function using parameters to choose which table
-function viewTable(whichTable){
- 
+function viewTable(whichTable) {
+
   connection.query("SELECT * FROM our_workplace." + whichTable, function (err, res) {
     if (err) throw err;
-   console.table(res);
-  start();
+    console.table(res);
+    start();
   });
 };
 
 //function for viewing all employee's data
-function viewAllEmployeeData(){
-  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id"; 
+function viewAllEmployeeData() {
+  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id";
   connection.query(sql_leftJoin + ";", function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -254,26 +248,26 @@ function viewAllEmployeeData(){
 };
 
 //function for viewing all data from employee, role and department tables
-function viewAllData(){
-  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id"; 
+function viewAllData() {
+  let sql_leftJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id";
   let sql_rightJoin = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, employee.manager_id FROM employee RIGHT JOIN role ON employee.role_id = role.id RIGHT JOIN department ON role.department_id = department.id";
   connection.query(sql_leftJoin + " UNION " + sql_rightJoin + ";", function (err, res) {
     if (err) throw err;
-   console.table(res);
-  //console.log("The json result: " + JSON.stringify(res));
-   start();
+    console.table(res);
+    //console.log("The json result: " + JSON.stringify(res));
+    start();
   });
 };
 
 //function for viewing connection between the 3 tables
-function viewConnectedData(){
-  
-    connection.query("SELECT employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, role.salary AS salary, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;", function (err, res) {
-      if (err) throw err;
-     console.table(res);
+function viewConnectedData() {
+
+  connection.query("SELECT employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, role.salary AS salary, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
     //console.log("The json result: " + JSON.stringify(res));
-     start();
-    });
+    start();
+  });
 };
 
 //function for choosing table to add to 
@@ -294,7 +288,7 @@ function selectTableToAddTo() {
       case "Employee table":
         addToTableEmployee();
         break;
-        case "Role table":
+      case "Role table":
         addToTableRole();
         break;
       case "Department table":
@@ -363,9 +357,9 @@ function selectTableToView() {
       case "VIEW ALL employee's data":
         viewAllEmployeeData();
         break;
-        case "VIEW ALL data":
-          viewAllData();
-          break;
+      case "VIEW ALL data":
+        viewAllData();
+        break;
       case "VIEW the employees that have connected data":
         viewConnectedData();
         break;
@@ -375,7 +369,7 @@ function selectTableToView() {
       case "VIEW only role table":
         viewTable("role");
         break;
-        case "VIEW only department table":
+      case "VIEW only department table":
         viewTable("department");
         break;
       default:
@@ -384,8 +378,6 @@ function selectTableToView() {
 
   });
 };
-
-
 
 function start() {
   inquirer.prompt([
@@ -399,7 +391,7 @@ function start() {
         "VIEW database",
         "EXIT"
       ]
-    },
+    }
   ]).then(function (data) {
     switch (data.type) {
       case "ADD to database":
@@ -415,9 +407,39 @@ function start() {
         "EXIT";
         connection.end();
         break;
-    }
-
-  })
+    };
+  });
 };
 
+//...only if monospace font was available
+function logo(){
+  const fun = 
+  ` 
+  _____        _   _        _____   
+  /  _  \      | | | |      |  _  \  
+  | | | |      | | | |      | |_| |  
+  | | | |      | | | |      |  _  /  
+  | |_| |      | |_| |      | | \ \  
+  \_____/      \_____/      |_|  \_\ 
 
+
+  _          __       _____        _____         _   _         _____        _                ___        _____        _____       
+  | |        / /      /  _  \      |  _  \       | | / /       |  _  \      | |              /   |      /  ___|      | ____|      
+  | |  __   / /       | | | |      | |_| |       | |/ /        | |_| |      | |             / /| |      | |          | |__        
+  | | /  | / /        | | | |      |  _  /       | |\ \        |  ___/      | |            / / | |      | |          |  __|       
+  | |/   |/ /         | |_| |      | | \ \       | | \ \       | |          | |___        / /  | |      | |___       | |___       
+  |___/|___/          \_____/      |_|  \_\      |_|  \_\      |_|          |_____|      /_/   |_|      \_____|      |_____|  
+  `;
+   console.log( "\x1b[33m" , fun );
+};
+
+function programStart() {
+  logo();
+  start();
+};
+
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId + "\n");
+  programStart();
+});
