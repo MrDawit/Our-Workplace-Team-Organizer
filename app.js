@@ -379,6 +379,7 @@ function selectTableToView() {
   });
 };
 
+//function that starts the prompt tree
 function start() {
   inquirer.prompt([
     {
@@ -411,10 +412,10 @@ function start() {
   });
 };
 
-//...only if monospace font was available
-function logo(){
-  const fun = 
-  ` 
+//...only if monospace font was available, it would look better
+function logo() {
+  const fun =
+    ` 
   _____        _   _        _____   
   /  _  \      | | | |      |  _  \  
   | | | |      | | | |      | |_| |  
@@ -430,14 +431,16 @@ function logo(){
   | |/   |/ /         | |_| |      | | \ \       | | \ \       | |          | |___        / /  | |      | |___       | |___       
   |___/|___/          \_____/      |_|  \_\      |_|  \_\      |_|          |_____|      /_/   |_|      \_____|      |_____|  
   `;
-   console.log( "\x1b[33m" , fun );
+  console.log("\x1b[33m", fun);
 };
+
 
 function programStart() {
   logo();
   start();
 };
 
+//executes a connection to mysql, then starts our program
 connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
