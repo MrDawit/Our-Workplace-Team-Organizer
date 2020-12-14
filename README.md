@@ -6,7 +6,7 @@
 
 # Our Workplace : Team Organizer
 ![](https://img.shields.io/badge/Made%20with-Javascript-green)
-![](https://camo.githubusercontent.com/cec92673ea713fa89ba2ae2033daf5851f6f39393ff5b93231aa707d424638d9/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d4e6f64656a732d626c61636b3f7374796c653d666c61742d737175617265266c6f676f3d4e6f64652e6a73)   \
+![](https://camo.githubusercontent.com/cec92673ea713fa89ba2ae2033daf5851f6f39393ff5b93231aa707d424638d9/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d4e6f64656a732d626c61636b3f7374796c653d666c61742d737175617265266c6f676f3d4e6f64652e6a73)   
 
 Project Repository: https://github.com/MrDawit/Our-Workplace-Team-Organizer \
 Project Walkthrough Link: https://drive.google.com/file/d/1K9sRW9RXihJheJIiYJRwxEaCfnOYAuDb/view
