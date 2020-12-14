@@ -49,7 +49,7 @@ Project Walkthrough Link: https://drive.google.com/file/d/1K9sRW9RXihJheJIiYJRwx
 
 
 ## Created By
-[MrDawit Shalom Dawit](https://github.com/MrDawit)
+[MrDawit Shalom Dawit](https://github.com/MrDawit) \
 Email: Shalom.Dawit@Gmail.com 
 
 ## Repository
