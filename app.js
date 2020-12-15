@@ -1,11 +1,18 @@
+require("dotenv").config();
+
+//either create a .env file where you enter values local values for PORT,USER and PASS ...or edit variables user_port, user_name and user_password
+const user_port= process.env.PORT;
+const user_name = process.env.USER;
+const user_password = process.env.PASS;
+
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 
 const connection = mysql.createConnection({
   host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "password",
+  port: user_port,
+  user: user_name,
+  password: user_password,
   database: "our_workplace"
 });
 

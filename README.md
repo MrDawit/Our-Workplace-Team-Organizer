@@ -30,7 +30,8 @@ Project Walkthrough Link: https://drive.google.com/file/d/1K9sRW9RXihJheJIiYJRwx
 
 * Download and install mysql 
 * Download the repository 
-* In the "app.js" file, edit the value for your passowrd inside the  "mysql.createConnection" object equaling the passowrd for your mysql connection 
+* If you want to use the dotenv module, you have the option to create a ".env" file and include your connection values to the variables PORT, USER and PASS.
+* Or you can elect to edit the variables "user_port", "user_name" and "user_password" to equal your connection values (in the "app.js" file lines 4-6)
 * Run "schema.sql" in your UI of choice so that the "our_workplace" database is created along with all the tables 
 * In your node terminal, execute code "npm i" to install the dependcies for this package 
 * If errors do not occur, execute code "npm start" 
@@ -41,6 +42,7 @@ Project Walkthrough Link: https://drive.google.com/file/d/1K9sRW9RXihJheJIiYJRwx
 ![](https://img.shields.io/badge/-mysq-red)
 ![](https://img.shields.io/badge/-inquirer-orange)
 ![](https://img.shields.io/badge/-console.table-blue)
+![](https://img.shields.io/badge/-dotenv-purple)
 
 ## Usage Notes
 * Prompts allow you to navigate through the app effortlessly using node
